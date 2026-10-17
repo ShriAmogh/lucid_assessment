@@ -214,9 +214,3 @@ lucid_assignment/
 ├── project.md                    # Project requirements & deliverables tracking
 └── README.md                     # This file
 ```
-
----
-
-## 📜 License & Compliance
-
-Built for the **LucidPlus Candidate Assessment**. Free to evaluate. Models are distributed under Apache 2.0 / open-source licenses.
