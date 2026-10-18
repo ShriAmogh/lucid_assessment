@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 MODELS_DIR = BASE_DIR / "models"
-IMAGES_DIR = BASE_DIR / "images"
 SAMPLES_DIR = BASE_DIR / "samples"
+IMAGES_DIR = (BASE_DIR / "images") if (BASE_DIR / "images").exists() else (SAMPLES_DIR / "input")
 
 
 class ModelSettings(BaseModel):

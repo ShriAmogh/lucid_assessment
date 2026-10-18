@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from PIL import Image
 
-from backend.app.config import settings, IMAGES_DIR
+from backend.app.config import settings, IMAGES_DIR, SAMPLES_DIR
 from backend.app.pipeline.ocr_engine import OCREngine
 from backend.app.models.schemas import ExtractionResponse, SampleImageInfo
 from backend.app.utils.logger import get_logger
@@ -87,12 +87,13 @@ def health_check():
 
 @app.get("/api/samples", response_model=List[SampleImageInfo], tags=["Samples"])
 def list_samples():
-    """Returns metadata for all bundled international ID samples in the images directory."""
-    if not IMAGES_DIR.exists():
+    """Returns metadata for all bundled international ID samples."""
+    target_dir = IMAGES_DIR if IMAGES_DIR.exists() and any(IMAGES_DIR.glob("*.png")) else (SAMPLES_DIR / "input")
+    if not target_dir.exists():
         return []
 
     samples = []
-    for file_path in sorted(IMAGES_DIR.glob("*.png")):
+    for file_path in sorted(target_dir.glob("*.png")):
         filename = file_path.name
 
         # Determine locale from filename
@@ -129,6 +130,8 @@ def list_samples():
 def get_sample_image(filename: str):
     """Serves the raw image file for a given sample."""
     file_path = IMAGES_DIR / filename
+    if not file_path.exists():
+        file_path = SAMPLES_DIR / "input" / filename
     if not file_path.exists() or not file_path.is_file():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
