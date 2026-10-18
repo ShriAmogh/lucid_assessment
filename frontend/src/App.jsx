@@ -263,7 +263,7 @@ export default function App() {
           fontFamily: 'var(--font-mono)',
         }}
       >
-        OCR Engine • Offline ONNX Runtime CPU Pipeline • Apache 2.0
+        OCR Engine • Offline ONNX Runtime CPU Pipeline
       </footer>
     </div>
   )
